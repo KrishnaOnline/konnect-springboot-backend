@@ -1,12 +1,16 @@
 package com.krishnavamshi.konnect.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     private Integer id;
+    // @Column(name = "my_name")  // changes column name from "first_name" to "my_name"
     private String firstName;
     private String lastName;
     private String email;

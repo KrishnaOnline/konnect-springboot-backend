@@ -3,6 +3,7 @@ package com.krishnavamshi.konnect.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,9 +13,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.krishnavamshi.konnect.models.User;
+import com.krishnavamshi.konnect.repositories.UserRepository;
 
 @RestController
 public class UserController {
+    @Autowired
+    UserRepository userRepository;
+
+    @PostMapping("/users")
+    public User createUser(@RequestBody User user) {
+        User newUser = new User();
+        newUser.setId(user.getId());
+        newUser.setFirstName(user.getFirstName());
+        newUser.setLastName(user.getLastName());
+        newUser.setEmail(user.getEmail());
+        newUser.setPassword(user.getPassword());
+        User savedUser = userRepository.save(newUser);
+        return savedUser;
+    }
+
     @GetMapping("/users")
     public List<User> getUsers() {
         List<User> users = new ArrayList<>();
@@ -30,17 +47,6 @@ public class UserController {
         User u1 = new User(1, "Xyz", "Khan", "xyz@mail.com", "123456");
         u1.setId(id);
         return u1;
-    }
-
-    @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
-        User newUser = new User();
-        newUser.setId(user.getId());
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
-        newUser.setEmail(user.getEmail());
-        newUser.setPassword(user.getPassword());
-        return newUser;
     }
 
     @PutMapping("/users")
