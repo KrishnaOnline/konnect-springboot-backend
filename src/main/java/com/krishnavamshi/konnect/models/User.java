@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,6 +38,7 @@ public class User {
     private List<Integer> followers = new ArrayList<>();   // list of IDs so Integer;
     private List<Integer> following = new ArrayList<>();
     private String gender;
+    @ManyToMany
     private List<Post> savedPosts = new ArrayList<>();
     // private LocalDateTime createdAt;
 }
