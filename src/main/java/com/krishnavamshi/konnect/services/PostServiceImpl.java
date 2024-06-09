@@ -16,6 +16,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
@@ -80,7 +81,8 @@ public class PostServiceImpl implements PostService {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Post> cq = cb.createQuery(Post.class);
         Root<Post> post = cq.from(Post.class);
-        Predicate userIdPredicate = cb.equal(post.get("userId"), userId);
+        Join<Post, User> user = post.join("user");
+        Predicate userIdPredicate = cb.equal(user.get("id"), userId);
         cq.where(userIdPredicate);
         return entityManager.createQuery(cq).getResultList();
     }
