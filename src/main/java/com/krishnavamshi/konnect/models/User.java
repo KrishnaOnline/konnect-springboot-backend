@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,6 +40,7 @@ public class User {
     private List<Integer> followers = new ArrayList<>();   // list of IDs so Integer;
     private List<Integer> following = new ArrayList<>();
     private String gender;
+    // @JsonIgnore
     @ManyToMany
     private List<Post> savedPosts = new ArrayList<>();
     // private LocalDateTime createdAt;
