@@ -1,5 +1,8 @@
 package com.krishnavamshi.konnect.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -15,15 +18,21 @@ public class User {
     private String lastName;
     private String email;
     private String password;
+    private List<Integer> followers = new ArrayList<>();   // list of IDs so Integer;
+    private List<Integer> following = new ArrayList<>();
+    private String gender;
     
     public User() {}
-    public User(Integer id, String firstName, String lastName, String email, String password) {
+    public User(Integer id, String firstName, String lastName, String email, String password, List<Integer> followers, List<Integer> following, String gender) {
         super();
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.followers = followers;
+        this.following = following;
+        this.gender = gender;
     }
 
     public Integer getId() {
@@ -59,5 +68,23 @@ public class User {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public List<Integer> getFollowers() {
+        return followers;
+    }
+    public void setFollowers(List<Integer> followers) {
+        this.followers = followers;
+    }
+    public List<Integer> getFollowing() {
+        return following;
+    }
+    public void setFollowing(List<Integer> following) {
+        this.following = following;
+    }
+    public String getGender() {
+        return gender;
+    }
+    public void setGender(String gender) {
+        this.gender = gender;
     }     
 }
