@@ -4,10 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.krishnavamshi.konnect.config.JwtProvider;
 import com.krishnavamshi.konnect.models.User;
 import com.krishnavamshi.konnect.repositories.UserRepository;
+import com.krishnavamshi.konnect.response.AuthResponse;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -24,16 +29,26 @@ public class UserServiceImpl implements UserService {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
-    public User registerUser(User user) {
+    public AuthResponse registerUser(User user) throws Exception {
+        User isExists = userRepository.findByEmail(user.getEmail());
+        if(isExists!=null) {
+            throw new Exception("Email Already Exists");
+        }
         User newUser = new User();
-        newUser.setId(user.getId());
         newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
         newUser.setEmail(user.getEmail());
-        newUser.setPassword(user.getPassword());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(newUser);
-        return savedUser;
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword());
+        String token = JwtProvider.generateToken(authentication);
+        AuthResponse res = new AuthResponse(token, "User Registered Successfully");
+        return res;
     }
 
     @Override

@@ -26,13 +26,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
-        User newUser = userService.registerUser(user);
-        return newUser;
-        // return userService.registerUser(user);
-    }
-
     @GetMapping("/auth/users")
     public List<User> getUsers() {
         // List<User> users = new ArrayList<>();
