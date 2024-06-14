@@ -28,6 +28,6 @@ class HomeResponse {
 public class HomeController {
     @GetMapping("/")
     public HomeResponse homeControllerHandler() {
-        return new HomeResponse(true, "Server is Up and Running...");
+        return new HomeResponse(true, "Konnect Server is Up and Running...");
     }
 }

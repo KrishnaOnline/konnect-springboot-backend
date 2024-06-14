@@ -33,7 +33,7 @@ public class UserController {
         // return userService.registerUser(user);
     }
 
-    @GetMapping("/users")
+    @GetMapping("/auth/users")
     public List<User> getUsers() {
         // List<User> users = new ArrayList<>();
         // User u1 = new User(1, "Abcd", "Singh", "abcd@mail.com", "123456");
@@ -45,19 +45,19 @@ public class UserController {
         return users;
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/auth/users/{userId}")
     public User getUserById(@PathVariable("userId") Integer id) throws Exception {
         User user = userService.findUserById(id);
         return user;
     }
 
-    @PutMapping("/users/{userId}")
+    @PutMapping("/auth/users/{userId}")
     public User updateUser(@RequestBody User user, @PathVariable("userId") Integer id) throws Exception {
         User updatedUser = userService.updateUser(user, id);
         return updatedUser;
     }
 
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/auth/users/{userId}")
     public String deleteUser(@PathVariable Integer userId) throws Exception {   // (@PathVariable("userId") integer id)
         Optional<User> existedUser = userRepository.findById(userId);
         if(existedUser.isEmpty()) {
@@ -69,13 +69,13 @@ public class UserController {
         return "User Deleted with ID "+userId;
     }
 
-    @PutMapping("/users/follow/{user1Id}/{user2Id}")
+    @PutMapping("/auth/users/follow/{user1Id}/{user2Id}")
     public User followUserHandler(@PathVariable Integer user1Id, @PathVariable("user2Id") Integer user2Id) throws Exception {
         User user = userService.followUser(user1Id, user2Id);
         return user;
     }
 
-    @GetMapping("/users/search")   // accesses as "/users/search?query=@mail.com"
+    @GetMapping("/auth/users/search")   // accesses as "/users/search?query=@mail.com"
     public List<User> searchUsersHandler(@RequestParam("query") String query) {
         List<User> users = userService.searchUsers(query);
         return users;
