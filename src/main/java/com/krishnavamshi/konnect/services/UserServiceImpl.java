@@ -68,15 +68,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User followUser(Integer user1Id, Integer user2Id) throws Exception {
+    public User followUser(Integer reqUserId1, Integer user2Id) throws Exception {
         // Optional<User> user1 = userRepository.findById(user1Id);
-        User user1 = findUserById(user1Id);
+        User reqUser1 = findUserById(reqUserId1);
         User user2 = findUserById(user2Id);
-        user2.getFollowers().add(user1.getId());
-        user1.getFollowing().add(user2.getId());
-        userRepository.save(user1);
+        if(user2.getFollowers().contains(reqUserId1)) {
+            user2.getFollowers().remove(reqUser1.getId());
+            reqUser1.getFollowing().remove(user2.getId());
+        } else {
+            user2.getFollowers().add(reqUser1.getId());
+            reqUser1.getFollowing().add(user2.getId());
+        }
+        userRepository.save(reqUser1);
         userRepository.save(user2);
-        return user1;
+        return reqUser1;
     }
 
     @Override
@@ -96,7 +101,10 @@ public class UserServiceImpl implements UserService {
             existedUser.setEmail(user.getEmail());
         }
         if(user.getPassword()!=null) {
-            existedUser.setPassword(user.getPassword());
+            existedUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        if(user.getGender()!=null) {
+            existedUser.setGender(user.getGender());
         }
         User updatedUser = userRepository.save(existedUser);
         return updatedUser;
@@ -118,5 +126,12 @@ public class UserServiceImpl implements UserService {
         // return userRepository.searchUser(query);
 
         return entityManager.createQuery(cq).getResultList();
+    }
+
+    @Override
+    public User findUserByJWT(String jwt) {
+        String email = JwtProvider.getEmailFromJwtToken(jwt);
+        User user = userRepository.findByEmail(email);
+        return user;
     }
 }
