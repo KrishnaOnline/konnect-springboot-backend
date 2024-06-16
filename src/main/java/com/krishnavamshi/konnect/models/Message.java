@@ -23,9 +23,9 @@ public class Message {
     private Integer id;
     private String content;
     private String image;
-    // @JsonIgnore
     @ManyToOne
     private User user;
+    @JsonIgnore
     @ManyToOne
     private Chat chat;
     private LocalDateTime timeStamp;
