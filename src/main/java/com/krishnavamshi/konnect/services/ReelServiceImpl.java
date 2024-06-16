@@ -34,9 +34,9 @@ public class ReelServiceImpl implements ReelService {
     @Override
     public List<Reel> getUserReels(Integer userId) throws Exception {
         User user = userService.findUserById(userId);
-        if(user==null) {
-            throw new Exception("User Not Found");
-        }
+        // if(user==null) {
+        //     throw new Exception("User Not Found");
+        // }
         return reelRepository.findByUserId(userId);
     }
 }
