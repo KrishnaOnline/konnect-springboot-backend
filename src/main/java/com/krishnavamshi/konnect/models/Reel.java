@@ -21,5 +21,4 @@ public class Reel {
     private String video;
     @ManyToOne
     private User user;
-
 }
