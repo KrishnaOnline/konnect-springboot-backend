@@ -40,7 +40,8 @@ public class AuthController {
     public AuthResponse logIn(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         String token = JwtProvider.generateToken(authentication);
-        return new AuthResponse(token, "Logged In Successfully");
+        User user = userService.findUserByEmail(loginRequest.getEmail());
+        return new AuthResponse(token, "Logged In Successfully", user);
     }
 
     private Authentication authenticate(String email, String password) {

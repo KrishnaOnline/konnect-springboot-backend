@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword());
         String token = JwtProvider.generateToken(authentication);
         System.out.println("TOKEN GENERATED :"+token);
-        AuthResponse res = new AuthResponse(token, "User Registered Successfully");
+        AuthResponse res = new AuthResponse(token, "User Registered Successfully", savedUser);
         return res;
     }
 
