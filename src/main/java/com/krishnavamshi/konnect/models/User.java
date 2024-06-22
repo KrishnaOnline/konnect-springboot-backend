@@ -40,6 +40,7 @@ public class User {
     private List<Integer> followers = new ArrayList<>();   // list of IDs so Integer;
     private List<Integer> following = new ArrayList<>();
     private String gender;
+    // private String image;
     // @JsonIgnore
     @ManyToMany
     private List<Post> savedPosts = new ArrayList<>();
