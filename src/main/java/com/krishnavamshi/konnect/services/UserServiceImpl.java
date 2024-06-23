@@ -43,6 +43,8 @@ public class UserServiceImpl implements UserService {
         newUser.setLastName(user.getLastName());
         newUser.setEmail(user.getEmail());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setBio(user.getBio());
+        newUser.setImage(user.getImage());
         User savedUser = userRepository.save(newUser);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword());
@@ -97,14 +99,20 @@ public class UserServiceImpl implements UserService {
         if(user.getLastName()!=null) {
             existedUser.setLastName(user.getLastName());
         }
-        if(user.getEmail()!=null) {
-            existedUser.setEmail(user.getEmail());
-        }
+        // if(user.getEmail()!=null) {
+        //     existedUser.setEmail(user.getEmail());
+        // }
         if(user.getPassword()!=null) {
             existedUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         if(user.getGender()!=null) {
             existedUser.setGender(user.getGender());
+        }
+        // if(user.getImage()!=null) {
+        //     existedUser.setImage(user.getImage());
+        // }
+        if(user.getBio()!=null) {
+            existedUser.setBio(user.getBio());
         }
         User updatedUser = userRepository.save(existedUser);
         return updatedUser;
