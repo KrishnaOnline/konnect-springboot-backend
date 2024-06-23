@@ -102,9 +102,9 @@ public class UserServiceImpl implements UserService {
         // if(user.getEmail()!=null) {
         //     existedUser.setEmail(user.getEmail());
         // }
-        if(user.getPassword()!=null) {
-            existedUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
+        // if(user.getPassword()!=null) {
+        //     existedUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        // }
         if(user.getGender()!=null) {
             existedUser.setGender(user.getGender());
         }
