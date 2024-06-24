@@ -108,9 +108,9 @@ public class UserServiceImpl implements UserService {
         if(user.getGender()!=null) {
             existedUser.setGender(user.getGender());
         }
-        // if(user.getImage()!=null) {
-        //     existedUser.setImage(user.getImage());
-        // }
+        if(user.getImage()!=null) {
+            existedUser.setImage(user.getImage());
+        }
         if(user.getBio()!=null) {
             existedUser.setBio(user.getBio());
         }

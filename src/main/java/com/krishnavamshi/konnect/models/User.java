@@ -41,6 +41,7 @@ public class User {
     private List<Integer> following = new ArrayList<>();
     private String gender;
     private String bio;
+    @Column(columnDefinition = "TEXT")
     private String image;
     // @JsonIgnore
     @ManyToMany
