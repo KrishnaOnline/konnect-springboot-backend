@@ -24,9 +24,10 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Chat createChat(User reqUser, User user2) {
-        Chat existedChat = chatRepository.findChatsByUsersIds(user2, reqUser);
-        if(existedChat!=null) {
-            return existedChat;
+        List<Chat> existingChats = chatRepository.findChatsByUsersIds(reqUser, user2);
+        if(!existingChats.isEmpty()) {
+            // If there are multiple chats, return the first one or handle it as needed
+            return existingChats.get(0);
         }
         Chat newChat = new Chat();
         newChat.getUsers().add(user2);

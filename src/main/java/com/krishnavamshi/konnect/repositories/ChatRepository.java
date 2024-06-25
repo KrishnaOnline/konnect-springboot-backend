@@ -16,7 +16,9 @@ public interface ChatRepository extends JpaRepository<Chat, Integer> {
 
     // List<Chat> findByUsersContainingAndUsersContaining(User user, User reqUser);
     // OR
-    @Query("SELECT c FROM Chat c WHERE :user MEMBER OF c.users AND :reqUser MEMBER OF c.users")
-    public Chat findChatsByUsersIds(@Param("user") User user, @Param("reqUser") User reqUser);
+    // @Query("SELECT c FROM Chat c WHERE :user MEMBER OF c.users AND :reqUser MEMBER OF c.users")
+    // public Chat findChatsByUsersIds(@Param("user") User user, @Param("reqUser") User reqUser);
     // OR Use JPA and Persistence Context...
+    @Query("SELECT c FROM Chat c WHERE :user MEMBER OF c.users AND :reqUser MEMBER OF c.users")
+    public List<Chat> findChatsByUsersIds(@Param("user") User user, @Param("reqUser") User reqUser);
 }
