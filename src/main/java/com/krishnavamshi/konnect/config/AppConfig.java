@@ -51,7 +51,8 @@ public class AppConfig {
                 cfg.setAllowedOrigins(
                     Arrays.asList(
                     "http://localhost:5173",
-                         "http://192.168.29.170:5173"
+                         "http://192.168.29.170:5173",
+                         "https://konnect-kkv.vercel.app"
                     )
                     // Collections.singletonList("*")
                 );
