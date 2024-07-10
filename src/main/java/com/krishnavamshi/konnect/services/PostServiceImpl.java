@@ -40,6 +40,9 @@ public class PostServiceImpl implements PostService {
         User user = userService.findUserById(userId);
 
         Post newPost = new Post();
+        if(post.getCaption()==null && (post.getImage()==null || post.getVideo()==null)) {
+            throw new Exception("Post Something");
+        }
         newPost.setCaption(post.getCaption());
         newPost.setImage(post.getImage());
         newPost.setCreatedAt(LocalDateTime.now());
