@@ -4,10 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.krishnavamshi.konnect.config.JwtProvider;
 import com.krishnavamshi.konnect.models.User;
 import com.krishnavamshi.konnect.repositories.UserRepository;
+import com.krishnavamshi.konnect.response.AuthResponse;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -24,16 +29,29 @@ public class UserServiceImpl implements UserService {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
-    public User registerUser(User user) {
+    public AuthResponse registerUser(User user) throws Exception {
+        User isExists = userRepository.findByEmail(user.getEmail());
+        if(isExists!=null) {
+            throw new Exception("Email Already Exists");
+        }
         User newUser = new User();
-        newUser.setId(user.getId());
         newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
         newUser.setEmail(user.getEmail());
-        newUser.setPassword(user.getPassword());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setBio(user.getBio());
+        newUser.setImage(user.getImage());
         User savedUser = userRepository.save(newUser);
-        return savedUser;
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword());
+        String token = JwtProvider.generateToken(authentication);
+        System.out.println("TOKEN GENERATED :"+token);
+        AuthResponse res = new AuthResponse(token, "User Registered Successfully", savedUser);
+        return res;
     }
 
     @Override
@@ -52,15 +70,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User followUser(Integer user1Id, Integer user2Id) throws Exception {
+    public User followUser(Integer reqUserId1, Integer user2Id) throws Exception {
         // Optional<User> user1 = userRepository.findById(user1Id);
-        User user1 = findUserById(user1Id);
+        User reqUser1 = findUserById(reqUserId1);
         User user2 = findUserById(user2Id);
-        user2.getFollowers().add(user1.getId());
-        user1.getFollowing().add(user2.getId());
-        userRepository.save(user1);
+        if(user2.getFollowers().contains(reqUserId1)) {
+            user2.getFollowers().remove(reqUser1.getId());
+            reqUser1.getFollowing().remove(user2.getId());
+        } else {
+            user2.getFollowers().add(reqUser1.getId());
+            reqUser1.getFollowing().add(user2.getId());
+        }
+        userRepository.save(reqUser1);
         userRepository.save(user2);
-        return user1;
+        return reqUser1;
     }
 
     @Override
@@ -76,11 +99,20 @@ public class UserServiceImpl implements UserService {
         if(user.getLastName()!=null) {
             existedUser.setLastName(user.getLastName());
         }
-        if(user.getEmail()!=null) {
-            existedUser.setEmail(user.getEmail());
+        // if(user.getEmail()!=null) {
+        //     existedUser.setEmail(user.getEmail());
+        // }
+        // if(user.getPassword()!=null) {
+        //     existedUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        // }
+        if(user.getGender()!=null) {
+            existedUser.setGender(user.getGender());
         }
-        if(user.getPassword()!=null) {
-            existedUser.setPassword(user.getPassword());
+        if(user.getImage()!=null) {
+            existedUser.setImage(user.getImage());
+        }
+        if(user.getBio()!=null) {
+            existedUser.setBio(user.getBio());
         }
         User updatedUser = userRepository.save(existedUser);
         return updatedUser;
@@ -102,5 +134,12 @@ public class UserServiceImpl implements UserService {
         // return userRepository.searchUser(query);
 
         return entityManager.createQuery(cq).getResultList();
+    }
+
+    @Override
+    public User findUserByJWT(String jwt) {
+        String email = JwtProvider.getEmailFromJwtToken(jwt);
+        User user = userRepository.findByEmail(email);
+        return user;
     }
 }
