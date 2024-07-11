@@ -10,6 +10,7 @@ public interface PostService {
     List<Post> findPostByUserId(Integer userId);
     Post findPostById(Integer postId) throws Exception;
     List<Post> findAllPosts();
+    List<Post> findPaginatedPosts(int pageNo, int pageSize) throws Exception;
     Post savePost(Integer postId, Integer userId) throws Exception;
     Post likePost(Integer postId, Integer userId) throws Exception;
     Post commentPost(String comment, Integer postId, Integer userId);
