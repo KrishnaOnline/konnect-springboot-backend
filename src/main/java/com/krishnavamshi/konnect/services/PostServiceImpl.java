@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.krishnavamshi.konnect.models.Post;
@@ -74,6 +77,13 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> findAllPosts() {
         return postRepository.findAll();
+    }
+
+    @Override
+    public List<Post> findPaginatedPosts(int pageNo, int pageSize) throws Exception {
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.by("createdAt").descending());
+        Page<Post> pagingPost = postRepository.findAll(pageRequest);
+        return pagingPost.getContent();
     }
 
     @Override

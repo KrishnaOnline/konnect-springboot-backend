@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.krishnavamshi.konnect.models.Post;
@@ -61,6 +62,15 @@ public class PostController {
     public ResponseEntity<List<Post>> getAllPosts() {
         List<Post> posts = postService.findAllPosts();
         return new ResponseEntity<List<Post>>(posts, HttpStatus.OK);
+    }
+
+    @GetMapping("/posts/paginate")
+    public ResponseEntity<List<Post>> getPaginatedPosts(
+        @RequestParam(defaultValue = "0") Integer pageNo,
+        @RequestParam(defaultValue = "5") Integer pageSize
+    ) throws Exception {
+        List<Post> pagedPosts = postService.findPaginatedPosts(pageNo, pageSize);
+        return new ResponseEntity<List<Post>>(pagedPosts, HttpStatus.OK);
     }
 
     @PutMapping("/auth/posts/save/{postId}")
