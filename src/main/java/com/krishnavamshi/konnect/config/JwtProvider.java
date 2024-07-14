@@ -16,7 +16,8 @@ public class JwtProvider {
         String jwt = Jwts.builder()
                          .setIssuer("KrishnaVamshi")
                          .setIssuedAt(new Date())
-                         .setExpiration(new Date(new Date().getTime()+86400000))
+                         // .setExpiration(new Date(new Date().getTime()+86400000))
+                         .setExpiration(null)
                          .claim("email", auth.getName())
                          .signWith(key)
                          .compact();
