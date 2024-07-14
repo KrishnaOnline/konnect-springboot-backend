@@ -30,7 +30,7 @@ public class User {
     // With "lombok", We don't need to explicitly code all constructors and getters-setters such boilerplate code, lombok does it by iteself...
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     // @Column(name = "my_name")  // changes column name from "first_name" to "my_name"
     private String firstName;
