@@ -7,6 +7,11 @@ WORKDIR /app
 # Copy the Maven wrapper and project descriptor files to the container
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
+
+# Ensure the Maven wrapper script has execution permissions
+RUN chmod +x mvnw
+
+# Copy the source code to the container
 COPY src ./src
 
 # Build the application
